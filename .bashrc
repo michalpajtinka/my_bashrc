@@ -14,7 +14,12 @@ fg_green=$(tput setaf 2)
 fg_yellow=$(tput setaf 3)
 fg_blue=$(tput setaf 4)
 reset=$(tput sgr0)
-export PS1='\[$fg_green\]\A [\u@\h: \[$fg_yellow\]\W\[$fg_green\]]\[$reset\]\$ '
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+new_line="
+"
+export PS1='\[$fg_green\]\A [\u@\h: \[$fg_yellow\]\W\[$fg_green\]]\[$reset\]$(parse_git_branch)$new_line\$ '
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
